@@ -3,8 +3,6 @@ RAT (Remote Administration Tool) using port-knocking. No TCP/UDP port listening.
 libpcap-based server and libnet-based client.
 
 
-++++++++ KNOCK-OUT ++++++++
-
 This tool will help you to connect remotely to your *NIX-based system without 
 the need of a listening port as usual. Instead, the server (knock-outd) will be 
 analyzing all the incoming network traffic in order to identify a "triggering" 
@@ -28,8 +26,7 @@ are many other ways to do this easy task such as using scapy or any other networ
 packet forging tool.
 
 
-# ++++++++ COMPILATION ++++++++
-++++++++ COMPILATION ++++++++
+# Compilation 
 
 Before compiling it, make sure you have the required libraries installed.
 Read the REQUIREMENTS section.
@@ -44,21 +41,57 @@ $make client
 $make clean
 
 
-++++++++ SUPPORTED PROTOCOLS ++++++++
+# Usage
++ knock-out.conf
+The server (knock-outd) and the client (knock-outc) use the same configuration file,
+knock-out.conf.
 
-+ Data Link
-Ethernet
-Linux Cooked
+Modify this config file according to your needs. Following a brief description of 
+each customizable parameter in it:
 
-+ Network
-IP
+Protocol: transport protocol to use. Accepted values: "tcp" or "udp".
 
-+ Transmision
-TCP
-UDP
+Sequence: three and only three ports separated by commas that must be knocked before 
+          launching a shell. Accepted values: from 1 to 65535.
+
+Timeout:  maximum time in seconds between each port knock. If this timeout is reached 
+          the sequence is broken and the port knocking process must be started from
+          the first port specified in "Sequence".
+
+Method:   method to spawn a shell. Accepted values: "bind" or "reverse".
+
+Port:     if the chosen method is "bind", a new shell will be listening in this port.
+          if the method is "reverse", then a shell will be spawned to the client IP on 
+          this port. The client must have this TCP port listening (knock-outc does it
+          by default)
+
++ knock-out.h
+Each port knock on the specified "Sequence" must have the defined flags in knock-out.h.
+
+By default, the following flags must be enabled on each packet if the "Protocol" used 
+is TCP:
+\#define FLAG_KNOCK_TCP          TH_RST
+\#define VALID_FLAGS(flags)    ((flags & FLAG_KNOCK_TCP) ? 1 : 0)
+
+Therefore, all the packets must have the RST (Reset) flag enabled, if TCP used.
+
++ Server (knock-outd)
+$sudo ./knock-outd knock-out.conf <interface>
+
++ Client (knock-outc)
+$sudo ./knock-outc knock-out.conf <SERVER-IP>
 
 
-++++++++ REQUIREMENTS ++++++++
+# Supported protocols
+
++ Data Link: Ethernet, Linux Cooked
+
++ Network: IP
+
++ Transmision: TCP, UDP
+
+
+# Requirements
 
 + Server (knock-outd):
 libpcap
@@ -80,13 +113,21 @@ Manual download and compilation:
 https://sourceforge.net/projects/libnet-dev/
 
 
-++++++++ AUTHOR ++++++++
-| Name:      Alejandro Hernandez (nitr0us)
-| Twitter:   @nitr0usmx
-| Email:     nitrousenador [at] gmail [dot] com
-| Website:   http://www.brainoverflow.org
-| Blog:      http://chatsubo-labs.blogspot.mx
-| Location:
+# Author
+
+Alejandro Hernandez
+@nitr0usmx
+http://wwww.brainoverflow.org
+http://chatsubo-labs.blogspot.mx
+Location:
+
+
+
+
+
+
+
+
 
          .
          \'~~~-,

@@ -28,6 +28,7 @@ are many other ways to do this easy task such as using scapy or any other networ
 packet forging tool.
 
 
+# ++++++++ COMPILATION ++++++++
 ++++++++ COMPILATION ++++++++
 
 Before compiling it, make sure you have the required libraries installed.
@@ -46,15 +47,15 @@ $make clean
 ++++++++ SUPPORTED PROTOCOLS ++++++++
 
 + Data Link
- * Ethernet
- * Linux Cooked
+Ethernet
+Linux Cooked
 
 + Network
- - IP
+IP
 
 + Transmision
- - TCP
- - UDP
+TCP
+UDP
 
 
 ++++++++ REQUIREMENTS ++++++++

@@ -1,0 +1,18 @@
+REQUERIMIENTOS
+
+[[[SERVIDOR]]]
+El programa servidor (knock-outd) requiere funciones de la libreria libpcap, por
+lo tanto es necesario tener instalada dicha libreria.
+El programa fue hecho utilizando la version 0.9.4
+
+Link de descarga: http://www.tcpdump.org
+
+
+
+
+[[[CLIENTE]]]
+El programa cliente (knock-outc) requiere funciones de la libreria libnet, por
+lo tanto es necesario tener instalada dicha libreria.
+El programa fue hecho utilizando la version 1.1.2.1
+
+Link de descarga: http://www.packetfactory.net/libnet/

@@ -1,0 +1,14 @@
+Para compilar debes especificar que programa quieres compilar:
+
+SERVIDOR:
+$make servidor
+
+
+
+CLIENTE:
+$make cliente
+
+
+
+LIMPIAR:
+$make clean

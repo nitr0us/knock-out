@@ -1,0 +1,12 @@
+Protocolos Soportados:
+
++Enlace de Datos
+ - Ethernet
+ - Linux Cooked
+
++Red
+ - IP  (Internet Protocol)
+
++Transmision
+ - TCP (Transmission Control Protocol)
+ - UDP (User Datagram Protocol)

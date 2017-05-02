@@ -1,41 +1,53 @@
+# knock-out
 RAT (Remote Administration Tool) using port-knocking. No TCP/UDP port listening.
+libpcap-based server and libnet-based client.
+
 
 ++++++++ KNOCK-OUT ++++++++
 
-Knock-Out es un programa con arquitectura Cliente/Servidor.
-El servidor es el programa que estara analizando el trafico en ciertos
-puertos especificados en el archivo de configuracion, dichos puertos
-pueden estar abiertos o cerrados, ya que para tocar en ellos solamente
-sera necesario enviar un paquete y no establecer una conexion completa
-en el caso de TCP.
+This tool will help you to connect remotely to your *NIX-based system without 
+the need of a listening port as usual. Instead, the server (knock-outd) will be 
+analyzing all the incoming network traffic in order to identify a "triggering" 
+pattern of knocked ports, which in turn could be closed or opened by the OS or 
+any other application. On the other hand, the client (knock-outc) will send this 
+triggering pattern to the specified IP address (server's IP).
 
-Una vez que se han tocado correctamente los puertos en el servidor,
-este envia una shell a un puerto de la maquina de quien toco dichos
-puertos(en caso de que el metodo sea "reverse" en la configuracion),
-es decir, que el servidor lee los encabezados IP y reconoce de  donde
-vienen las peticiones(toques a puertos).
+knock-out.conf specifies the triggering packets sequence as well as the protocol, 
+where "tcp" or "udp" could be used. Once the server has been triggered, one of 
+the methods "bind" or "reverse" could be launched to spawn a shell. The "bind" 
+method forks a child process that listens in the specified "port", also configured 
+in this file, and the "reverse" method returns back a reverse shell on this same 
+specified "port" to the origin IP address detected in the incoming packets.
 
-En caso de que el metodo sea "bind", el servidor pone una shell en un
-puerto local (lado del servidor) y asi cualquiera podra conectarse a
-ese puerto e interactuar con la shell (con privilegios de root, por que
-para correr el servidor, son necesarios privilegios de administrador).
+The spawned shell will have root privileges, since it'll be inherited from the parent
+process (knock-outd), which evidently must be run as root to use the low-level socket 
+interface provided by libpcap.
 
-Para tocar los puertos hay varias formas, una es utilizando el cliente
-especialmente programado (knock-outc). Lee el archivo FORMA_DE_USO para
-ver otras opciones.
+The client (knock-outc) is the easiest way to knock the ports, however, there
+are many other ways to do this easy task such as using scapy or any other network
+packet forging tool.
 
-Tanto cliente como servidor requieren de ciertas librerias, lee el
-archivo REQUERIMIENTOS.
 
-Finalmente, para construir los programas (cliente o servidor) lee las
-instrucciones en el archivo COMPILACION.
+++++++++ COMPILATION ++++++++
+
+Before compiling it, make sure you have the required libraries installed.
+Read the REQUIREMENTS section.
+
++ Server (knock-outd):
+$make server
+
++ Client (knock-outc):
+$make client
+
++ To clean:
+$make clean
 
 
 ++++++++ SUPPORTED PROTOCOLS ++++++++
 
 + Data Link
- - Ethernet
- - Linux Cooked
+ * Ethernet
+ * Linux Cooked
 
 + Network
  - IP
@@ -47,8 +59,8 @@ instrucciones en el archivo COMPILACION.
 
 ++++++++ REQUIREMENTS ++++++++
 
-[[[ SERVER ]]]
-knock-outd requires libpcap
++ Server (knock-outd):
+libpcap
 
 Debian based systems:
 $sudo apt-get install libpcap-dev
@@ -57,11 +69,38 @@ Manual download and compilation:
 http://www.tcpdump.org
 
 
-[[[ CLIENT ]]]
-knock-outc requires libnet
++ Client (knock-outc):
+libnet
 
 Debian based systems:
 $sudo apt-get install libnet1-dev
 
 Manual download and compilation:
 https://sourceforge.net/projects/libnet-dev/
+
+
+++++++++ AUTHOR ++++++++
+| Name:      Alejandro Hernandez (nitr0us)
+| Twitter:   @nitr0usmx
+| Email:     nitrousenador [at] gmail [dot] com
+| Website:   http://www.brainoverflow.org
+| Blog:      http://chatsubo-labs.blogspot.mx
+| Location:
+
+         .
+         \'~~~-,
+          \    '-,_
+           \ /\    `~'~''\          M E X I C O
+           _\ \\          \/~\
+           \__ \\             \
+              \ \\.             \
+               \ \ \             `~~
+                '\\ \.             /
+                 / \  \            |
+                  \_\  \           |             _.----,
+                        |           \           !     /
+                       '._           \_      __/    _/
+                          \_           ''--''    __/
+                            \.__                |
+                                ''.__  __.._ o<-_\---- here !
+                                     ''     './  `

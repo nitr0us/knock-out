@@ -1,7 +1,4 @@
- ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
-|                          -- AUTHOR --                           |
- ~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~-~
-
+++++++++ AUTHOR ++++++++
 | Name:      Alejandro Hernandez (nitr0us)
 | Twitter:   @nitr0usmx
 | Email:     nitrousenador [at] gmail [dot] com

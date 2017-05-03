@@ -1,7 +1,5 @@
-++++++++ REQUIREMENTS ++++++++
-
-[[[ SERVER ]]]
-knock-outd requires libpcap
++ Server (knock-outd):
+libpcap
 
 Debian based systems:
 $sudo apt-get install libpcap-dev
@@ -10,8 +8,8 @@ Manual download and compilation:
 http://www.tcpdump.org
 
 
-[[[ CLIENT ]]]
-knock-outc requires libnet
++ Client (knock-outc):
+libnet
 
 Debian based systems:
 $sudo apt-get install libnet1-dev

@@ -1,7 +1,12 @@
-# knock-out
-RAT (Remote Administration Tool) using port-knocking. No TCP/UDP port listening.
-libpcap-based server and libnet-based client.
+knock-out
 
+A RAT (Remote Administration Tool) using port-knocking techniques for *NIX systems.
+No TCP/UDP port listening. libpcap-based server and libnet-based client.
+
+<img src="http://brainoverflow.org/misc/knock-out.png" width="100" height="100" />
+foo
+
+![Screenshot](http://brainoverflow.org/misc/knock-out.png)
 
 This tool will help you to connect remotely to your *NIX-based system without 
 the need of a listening port as usual. Instead, the server (knock-outd) will be 
@@ -26,11 +31,10 @@ are many other ways to do this easy task such as using scapy or any other networ
 packet forging tool.
 
 
-####################################################################################
-# Compilation 
+################## Compilation ##################
 
 Before compiling it, make sure you have the required libraries installed.
-Read the REQUIREMENTS section.
+Read the Requirements section.
 
 + Server (knock-outd):
 $make server
@@ -41,8 +45,8 @@ $make client
 + To clean:
 $make clean
 
-####################################################################################
-# Usage
+
+################## Usage ##################
 
 + knock-out.conf
 The server (knock-outd) and the client (knock-outc) use the same configuration file,
@@ -85,8 +89,7 @@ is TCP:
 Therefore, all the packets must have the RST (Reset) flag enabled, if TCP used.
 
 
-####################################################################################
-# Supported protocols
+################## Supported Protocols ##################
 
 + Data Link
   - Ethernet
@@ -100,8 +103,7 @@ Therefore, all the packets must have the RST (Reset) flag enabled, if TCP used.
   - UDP
 
 
-####################################################################################
-# Requirements
+################## Requirements ##################
 
 + Server (knock-outd):
 libpcap
@@ -123,8 +125,7 @@ Manual download and compilation:
 https://sourceforge.net/projects/libnet-dev/
 
 
-####################################################################################
-# Author
+################## Author ##################
 
 Alejandro Hernandez
 @nitr0usmx
@@ -149,3 +150,13 @@ Location:
                             \.__                |
                                 ''.__  __.._ o<-_\---- here !
                                      ''     './  `
+
+
+################## Final Notes ##################
+
+I originally wrote this code in 2006, but everything was in Spanish.
+11 years later I found out that this old code still works perfectly
+with the current versions of libpcap and libnet, so I thought I'd be 
+cool to translate it.
+
+Original code: http://brainoverflow.org/code/knock-out/knock-out.tar.gz

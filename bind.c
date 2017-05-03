@@ -39,11 +39,11 @@ void Bind(unsigned short port)
 	else if(pid == (pid_t) 0){ // Child process
 		socklen_t	foo = sizeof(struct sockaddr);
 
-		debugprint("-=[ [BIND] Child process accepting connections on port %u [PID: %d]\n", port, getpid());
+		debugprint("-=[ Child process accepting connections on port %u [PID: %d]\n", port, getpid());
 		if((clfd = accept(sockfd, (struct sockaddr *)&client, &foo)) == -1)
 			error_n(errno, "accept() @ Bind()");
 
-		debugprint("-=[ [BIND] Client connected from \"%s\"\n", inet_ntoa(client.sin_addr));
+		debugprint("-=[ Client connected from \"%s\"\n", inet_ntoa(client.sin_addr));
 
 		dup2(clfd, 0);
 		dup2(clfd, 1);

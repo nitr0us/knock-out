@@ -1,4 +1,4 @@
-knock-out
+# knock-out
 
 A RAT (Remote Administration Tool) using port-knocking techniques for *NIX systems.
 No TCP/UDP port listening. libpcap-based server and libnet-based client.
@@ -96,7 +96,7 @@ Therefore, all the packets must have the RST (Reset) flag enabled, if TCP used.
   - Linux Cooked
 
 + Network
-  -IP
+  - IP
 
 + Transmision
   - TCP

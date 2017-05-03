@@ -101,9 +101,11 @@ int main(int argc, char **argv)
 	debugprint("-=[ pcap_setfilter(): [OK]\n\n");
 
 	debugprint("<===== PORT-KNOCKING =====>\n");
+
 	pcap_loop(hand, -1, callback, NULL);
 
 	fprintf(stdout, "-=[ pcap_loop(): Finished...\n");
+
 	exit(EXIT_SUCCESS);
 }
 

@@ -26,6 +26,7 @@ are many other ways to do this easy task such as using scapy or any other networ
 packet forging tool.
 
 
+####################################################################################
 # Compilation 
 
 Before compiling it, make sure you have the required libraries installed.
@@ -40,8 +41,9 @@ $make client
 + To clean:
 $make clean
 
-
+####################################################################################
 # Usage
+
 + knock-out.conf
 The server (knock-outd) and the client (knock-outc) use the same configuration file,
 knock-out.conf.
@@ -65,15 +67,6 @@ Port:     if the chosen method is "bind", a new shell will be listening in this 
           this port. The client must have this TCP port listening (knock-outc does it
           by default)
 
-+ knock-out.h
-Each port knock on the specified "Sequence" must have the defined flags in knock-out.h.
-
-By default, the following flags must be enabled on each packet if the "Protocol" used 
-is TCP:
-\#define FLAG_KNOCK_TCP          TH_RST
-\#define VALID_FLAGS(flags)    ((flags & FLAG_KNOCK_TCP) ? 1 : 0)
-
-Therefore, all the packets must have the RST (Reset) flag enabled, if TCP used.
 
 + Server (knock-outd)
 $sudo ./knock-outd knock-out.conf <interface>
@@ -81,16 +74,33 @@ $sudo ./knock-outd knock-out.conf <interface>
 + Client (knock-outc)
 $sudo ./knock-outc knock-out.conf <SERVER-IP>
 
++ knock-out.h
+Each port knock on the specified "Sequence" must have the defined flags in knock-out.h.
 
+By default, the following flags must be enabled on each packet if the "Protocol" used
+is TCP:
+#define FLAG_KNOCK_TCP          TH_RST
+#define VALID_FLAGS(flags)    ((flags & FLAG_KNOCK_TCP) ? 1 : 0)
+
+Therefore, all the packets must have the RST (Reset) flag enabled, if TCP used.
+
+
+####################################################################################
 # Supported protocols
 
-+ Data Link: Ethernet, Linux Cooked
++ Data Link
+  - Ethernet
+  - Linux Cooked
 
-+ Network: IP
++ Network
+  -IP
 
-+ Transmision: TCP, UDP
++ Transmision
+  - TCP
+  - UDP
 
 
+####################################################################################
 # Requirements
 
 + Server (knock-outd):
@@ -113,6 +123,7 @@ Manual download and compilation:
 https://sourceforge.net/projects/libnet-dev/
 
 
+####################################################################################
 # Author
 
 Alejandro Hernandez
@@ -120,14 +131,6 @@ Alejandro Hernandez
 http://wwww.brainoverflow.org
 http://chatsubo-labs.blogspot.mx
 Location:
-
-
-
-
-
-
-
-
 
          .
          \'~~~-,

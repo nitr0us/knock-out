@@ -1,17 +1,13 @@
-// nitr0us
-#include"knock-out.h"
+#include "knock-out.h"
 
-/* Funcion para extraer los valores del archivo de configuracion pasado como
- * primer argumento.
- */
-void Parsear_configuracion(const char *file, config_t *conf)
+void Parse_config(config_t *conf)
 {
 	FILE	*fp;
 	char	buffer[256], buffer2[256], sec[3][6];
 	char	*ptr;
-	int	puerto, timeout, i = 0, j = 0;
+	int	port, timeout, i = 0, j = 0;
 
-	if((fp = fopen(file, "r")) == NULL)
+	if((fp = fopen(CONFIG_FILE, "r")) == NULL)
 		error_n(errno, "fopen");
 
 	bzero(sec, sizeof(sec));
@@ -22,17 +18,17 @@ void Parsear_configuracion(const char *file, config_t *conf)
 
 		strncpy(buffer2, buffer, 256);
 
-		if(stringcomp("Protocolo", strtok(buffer, "="))){
+		if(stringcomp("Protocol", strtok(buffer, "="))){
 			ptr = strchr(buffer2, (int) '=') + 1;
 			if(stringcomp("tcp\n", ptr)){
 				strncpy(conf->proto, "tcp", 4);
-				debugprint("-=[ Protocolo: %s\n", conf->proto);
+				debugprint("-=[ Protocol: %s\n", conf->proto);
 			} else if(stringcomp("udp\n", ptr)){
 				strncpy(conf->proto, "udp", 4);
-				debugprint("-=[ Protocolo: %s\n", conf->proto);
+				debugprint("-=[ Protocol: %s\n", conf->proto);
 			} else
-				error_fp("Protocolo invalido: %s", ptr, fp);
-		} else if(stringcomp("Secuencia", buffer)){
+				error_fp("Invalid Protocol: %s", ptr, fp);
+		} else if(stringcomp("Sequence", buffer)){
 			ptr = strchr(buffer2, (int) '=') + 1;
 			while(*ptr){
 				if(*ptr == ',' || *ptr == '\n'){
@@ -45,59 +41,58 @@ void Parsear_configuracion(const char *file, config_t *conf)
 
 				if(j == 5){
 					sec[i][j] = '\0';
-					error("-=[ Puerto de secuencia invalido: %s\n", sec[i]);
+					error("-=[ Invalid port in Sequence: %s\n", sec[i]);
 				}
 
 				sec[i][j] = *ptr++;
 				j++;
 			}
 
-			puerto = atoi(sec[0]);
-			if(!PUERTO_VALIDO(puerto))
-				error("-=[ Puerto de secuencia invalido: %d\n", puerto);
-			conf->sec1 = (unsigned short) puerto;
-			debugprint("-=[ Puerto de secuencia[1]: %d\n", conf->sec1);
+			port = atoi(sec[0]);
+			if(!VALID_PORT(port))
+				error("-=[ Invalid port in Sequence: %d\n", port);
+			conf->sec1 = (unsigned short) port;
+			debugprint("-=[ Sequence port [1]: %d\n", conf->sec1);
 
-			puerto = atoi(sec[1]);
-			if(!PUERTO_VALIDO(puerto))
-				error("-=[ Puerto de secuencia invalido: %d\n", puerto);
-			conf->sec2 = (unsigned short) puerto;
-			debugprint("-=[ Puerto de secuencia[2]: %d\n", conf->sec2);
+			port = atoi(sec[1]);
+			if(!VALID_PORT(port))
+				error("-=[ Invalid port in Sequence: %d\n", port);
+			conf->sec2 = (unsigned short) port;
+			debugprint("-=[ Sequence port [2]: %d\n", conf->sec2);
 
-			puerto = atoi(sec[2]);
-			if(!PUERTO_VALIDO(puerto))
-				error("-=[ Puerto de secuencia invalido: %d\n", puerto);
-
-			conf->sec3 = (unsigned short) puerto;
-			debugprint("-=[ Puerto de secuencia[3]: %d\n", conf->sec3);
+			port = atoi(sec[2]);
+			if(!VALID_PORT(port))
+				error("-=[ Invalid port in Sequence: %d\n", port);
+			conf->sec3 = (unsigned short) port;
+			debugprint("-=[ Sequence port [3]: %d\n", conf->sec3);
 		} else if(stringcomp("Timeout", buffer)){
 			ptr = strchr(buffer2, (int) '=') + 1;
 			timeout = atoi(ptr);
 			if(timeout < 1 || timeout > MAX_TIMEOUT)
-				error_fp("Timeout invalido: %d\n", timeout, fp);
+				error_fp("Invalid Timeout: %d\n", timeout, fp);
 
 			conf->timeout = timeout;
-			debugprint("-=[ Timeout: %d segundos\n", conf->timeout);
-		} else if(stringcomp("Metodo", buffer)){
+			debugprint("-=[ Timeout: %d seconds\n", conf->timeout);
+		} else if(stringcomp("Method", buffer)){
 			ptr = strchr(buffer2, (int) '=') + 1;
 			if(stringcomp("bind\n", ptr))
-				strncpy(conf->metodo, "bind", 8);
+				strncpy(conf->method, "bind", 8);
 			else if(stringcomp("reverse\n", ptr))
-				strncpy(conf->metodo, "reverse", 8);
+				strncpy(conf->method, "reverse", 8);
 			else
-				error_fp("Metodo invalido: %s", ptr, fp);
+				error_fp("Invalid Method: %s", ptr, fp);
 
-			debugprint("-=[ Metodo: %s\n", conf->metodo);
-		} else if(stringcomp("Puerto", buffer)){
+			debugprint("-=[ Method: %s\n", conf->method);
+		} else if(stringcomp("Port", buffer)){
 			ptr = strchr(buffer2, (int) '=') + 1;
-			puerto = atoi(ptr);
-			if(PUERTO_VALIDO(puerto)){
-				conf->puerto = (unsigned short) puerto;
-				debugprint("-=[ Puerto: %d\n", conf->puerto);
+			port = atoi(ptr);
+			if(VALID_PORT(port)){
+				conf->port = (unsigned short) port;
+				debugprint("-=[ Port: %d\n", conf->port);
 			}
 			else
-				error_fp("Puerto invalido: %d\n", puerto, fp);
+				error_fp("Invalid Port: %d\n", port, fp);
 		} else
-			error_fp("Opcion desconocida: %sSaliendo...\n", buffer2, fp);
+			error_fp("Unknown option: %s\nExiting...\n", buffer2, fp);
 	}
 }

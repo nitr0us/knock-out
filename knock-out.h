@@ -1,58 +1,57 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<signal.h>
-#include<unistd.h>
-#include<ctype.h>
-#include<errno.h>
-#include<sys/types.h>
-#include<sys/socket.h>
-#include<netinet/in.h>
-#include<arpa/inet.h>
-#include<netdb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <signal.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
 
-/* Numero de segundos entre el toque de un puerto y otro, y obvio, debe ser
-   menor que el timeout especificado en el servidor (knock-outd) por que de
-   otro modo no funcionara. */
-#define NSECS		3  // Segundos
-#define MAX_TIMEOUT	60 // Segundos
-/* Flag TCP para tocar en los puertos (Solo valido para proto=tcp) */
-#define FLAG_KNOCK_TCP	TH_RST
+#define CONFIG_FILE	"knock-out.conf"
 
-#define error(texto, args)	do{\
-	fprintf(stderr, texto, args);\
-	exit(EXIT_FAILURE);\
+#define NSECS		3  // Default Timeout (knock-out.conf) in seconds between each port knock
+#define MAX_TIMEOUT	60
+
+#define FLAG_KNOCK_TCP	TH_RST // TCP flag needed on each packet (only if TCP used)
+
+#define error(msg, args)	do{\
+		fprintf(stderr, msg, args);\
+		exit(EXIT_FAILURE);\
 	} while(0)
 
-#define error_n(codigo, texto)	do{\
-	fprintf(stderr, "%s:%d: %s - %s\n",\
-		__FILE__, __LINE__, texto, strerror(codigo));\
-	exit(EXIT_FAILURE);\
+#define error_n(code_n, msg)	do{\
+		fprintf(stderr, "%s:%d: %s - %s\n",\
+		__FILE__, __LINE__, msg, strerror(code_n));\
+		exit(EXIT_FAILURE);\
 	} while(0)
 
-#define error_fp(texto, arg, fp)	do{\
-	fprintf(stderr, texto, arg);\
-	fclose(fp);\
-	exit(EXIT_FAILURE);\
+#define error_fp(msg, arg, fp)	do{\
+		fprintf(stderr, msg, arg);\
+		fclose(fp);\
+		exit(EXIT_FAILURE);\
 	} while(0)
 
 #define stringcomp(str1, str2)	(strcmp(str1, str2) == 0)
-#define PUERTO_VALIDO(puerto)	((puerto > 0 && puerto < 65536) ? 1 : 0)
-#define FLAGS_VALIDAS(flags)	((flags & FLAG_KNOCK_TCP) ? 1 : 0)
+#define VALID_PORT(port)	((port > 0 && port < 65536) ? 1 : 0)
+#define VALID_FLAGS(flags)	((flags & FLAG_KNOCK_TCP) ? 1 : 0)
 
 #ifdef	DEBUG
-#define debugprint	printf("[DEBUG] "); printf
+#define debugprint	printf
 #else
 #define debugprint	//
 #endif
 
-typedef struct configuracion{
+typedef struct config{
 	unsigned short	sec1;
 	unsigned short	sec2;
 	unsigned short	sec3;
-	unsigned short	puerto;
+	unsigned short	port;
 	char		proto[4];
-	char		metodo[8];
+	char		method[8];
 	int		timeout;
 } config_t;
 
@@ -64,12 +63,11 @@ struct lcooked_hdr{
 	u_int16_t	proto;
 };
 
-/*** PROTOTIPOS ***/
-void Parsear_configuracion(const char *, config_t *);
+void usage(char *);
+void Parse_config(config_t *);
+void Reload_config(); // SIGHUP handler
 void Bind(unsigned short);
 void Reverse(const char *, unsigned short);
-void uso(char *);
-void interrupcion(int); // Manejador de senal SIGINT
-void alarma(); // Manejador de la senal SIGALRM (enviada al ocurrir un timeout)
-void recargar_config(); // Manejador de la senal SIGHUP (comunmente usada para recargar archivos de configuracion)
-char *obtener_ip_disp(const char *);
+void sigint_handler(int); // SIGINT handler
+void sigalrm_handler(); // SIGALRM handler (sent when timeout is reached)
+char *get_IP(const char *);

@@ -3,9 +3,6 @@
 A RAT (Remote Administration Tool) using port-knocking techniques for *NIX systems.
 No TCP/UDP port listening. libpcap-based server and libnet-based client.
 
-<img src="http://brainoverflow.org/misc/knock-out.png" width="100" height="100" />
-foo
-
 ![Screenshot](http://brainoverflow.org/misc/knock-out.png)
 
 This tool will help you to connect remotely to your *NIX-based system without 
